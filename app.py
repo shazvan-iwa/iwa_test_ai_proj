@@ -11,6 +11,12 @@ from werkzeug.utils import secure_filename
 from logger import get_logger
 from byaldi import RAGMultiModalModel
 import markdown
+import torch
+
+device = torch.device("cpu")
+print("Torch version:", torch.__version__)
+print("Using device:", device)
+print("CUDA available:", torch.cuda.is_available())
 
 # Set the TOKENIZERS_PARALLELISM environment variable to suppress warnings
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -45,7 +51,7 @@ def load_rag_model_for_session(session_id):
 
     if os.path.exists(index_path):
         try:
-            RAG = RAGMultiModalModel.from_index(index_path)
+            RAG = RAGMultiModalModel.from_index(index_path, device="cpu")
             RAG_models[session_id] = RAG
             logger.info(f"RAG model for session {session_id} loaded from index.")
         except Exception as e:

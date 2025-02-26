@@ -82,7 +82,7 @@ def load_model(model_choice):
         model = MllamaForConditionalGeneration.from_pretrained(
             model_id,
             torch_dtype=torch.float16 if device != 'cpu' else torch.float32,
-            device_map="auto"
+            device_map="cpu"
         )
         processor = AutoProcessor.from_pretrained(model_id)
         model.to(device)

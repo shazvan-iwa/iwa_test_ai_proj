@@ -1,0 +1,7 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting vllm
+  Downloading vllm-0.7.3.tar.gz (5.6 MB)
+     ---------------------------------------- 5.6/5.6 MB 2.4 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: still running...
+  Installing build dependencies: finished with status 'canceled'

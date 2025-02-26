@@ -72,8 +72,11 @@ def generate_response(images, query, session_id, resized_height=280, resized_wid
                     "content": image_contents + [{"type": "text", "text": query}],
                 }
             ]
+            logger.info("apply_chat_template")
             text = processor.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
+            logger.info("process_vision_info")
             image_inputs, video_inputs = process_vision_info(messages)
+            logger.info("processor")
             inputs = processor(
                 text=[text],
                 images=image_inputs,
@@ -83,6 +86,7 @@ def generate_response(images, query, session_id, resized_height=280, resized_wid
             )
             inputs = inputs.to(device)
             generated_ids = model.generate(**inputs, max_new_tokens=128)
+            
             generated_ids_trimmed = [
                 out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
             ]
