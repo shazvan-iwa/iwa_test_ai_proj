@@ -10,6 +10,17 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
 logger = get_logger(__name__)
 
+def detect_device():
+    """
+    Detects the best available device (CUDA, MPS, or CPU).
+    """
+    if torch.cuda.is_available():
+        return 'cuda'
+    elif torch.backends.mps.is_available():
+        return 'mps'
+    else:
+        return 'cpu'
+
 def index_documents(folder_path, index_name='document_index', index_path=None, indexer_model='vidore/colpali'):
     """
     Indexes documents in the specified folder using Byaldi.
@@ -30,7 +41,7 @@ def index_documents(folder_path, index_name='document_index', index_path=None, i
         logger.info("Conversion of non-PDF documents to PDFs completed.")
 
         # Initialize RAG model
-        RAG = RAGMultiModalModel.from_pretrained(indexer_model, device="cpu")
+        RAG = RAGMultiModalModel.from_pretrained(indexer_model, device=detect_device())
         
         if RAG is None:
             raise ValueError(f"Failed to initialize RAGMultiModalModel with model {indexer_model}")

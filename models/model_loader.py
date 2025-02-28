@@ -60,7 +60,7 @@ def load_model(model_choice):
         model = Qwen2VLForConditionalGeneration.from_pretrained(
             "Qwen/Qwen2-VL-7B-Instruct",
             torch_dtype=torch.float16 if device != 'cpu' else torch.float32,
-            device_map="auto"
+            device_map=detect_device()
         )
         processor = AutoProcessor.from_pretrained("Qwen/Qwen2-VL-7B-Instruct")
         model.to(device)
@@ -82,7 +82,7 @@ def load_model(model_choice):
         model = MllamaForConditionalGeneration.from_pretrained(
             model_id,
             torch_dtype=torch.float16 if device != 'cpu' else torch.float32,
-            device_map="cpu"
+            device_map=detect_device()
         )
         processor = AutoProcessor.from_pretrained(model_id)
         model.to(device)

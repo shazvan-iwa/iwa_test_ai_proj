@@ -13,7 +13,7 @@ from byaldi import RAGMultiModalModel
 import markdown
 import torch
 
-device = torch.device("cpu")
+
 print("Torch version:", torch.__version__)
 print("Using device:", device)
 print("CUDA available:", torch.cuda.is_available())
@@ -43,6 +43,19 @@ RAG_models = {}  # Dictionary to store RAG models per session
 app.config['INITIALIZATION_DONE'] = False  # Flag to track initialization
 logger.info("Application started.")
 
+def detect_device():
+    """
+    Detects the best available device (CUDA, MPS, or CPU).
+    """
+    if torch.cuda.is_available():
+        return 'cuda'
+    elif torch.backends.mps.is_available():
+        return 'mps'
+    else:
+        return 'cpu'
+    
+device = torch.device(detect_device())
+
 def load_rag_model_for_session(session_id):
     """
     Loads the RAG model for the given session_id from the index on disk.
@@ -51,7 +64,7 @@ def load_rag_model_for_session(session_id):
 
     if os.path.exists(index_path):
         try:
-            RAG = RAGMultiModalModel.from_index(index_path, device="cpu")
+            RAG = RAGMultiModalModel.from_index(index_path, device=detect_device())
             RAG_models[session_id] = RAG
             logger.info(f"RAG model for session {session_id} loaded from index.")
         except Exception as e:
