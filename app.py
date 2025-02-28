@@ -14,9 +14,7 @@ import markdown
 import torch
 
 
-print("Torch version:", torch.__version__)
-print("Using device:", device)
-print("CUDA available:", torch.cuda.is_available())
+
 
 # Set the TOKENIZERS_PARALLELISM environment variable to suppress warnings
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
@@ -55,6 +53,10 @@ def detect_device():
         return 'cpu'
     
 device = torch.device(detect_device())
+
+print("Torch version:", torch.__version__)
+print("Using device:", device)
+print("CUDA available:", torch.cuda.is_available())
 
 def load_rag_model_for_session(session_id):
     """
