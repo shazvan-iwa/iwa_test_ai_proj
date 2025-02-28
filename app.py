@@ -178,7 +178,7 @@ def chat():
             query = request.form['query']
             
             try:
-                generation_model = session.get('generation_model', 'qwen')
+                generation_model = session.get('generation_model', 'gpt4')
                 resized_height = session.get('resized_height', 280)
                 resized_width = session.get('resized_width', 280)
                 
@@ -324,7 +324,7 @@ def delete_session(session_id):
 def settings():
     if request.method == 'POST':
         indexer_model = request.form.get('indexer_model', 'vidore/colpali')
-        generation_model = request.form.get('generation_model', 'qwen')
+        generation_model = request.form.get('generation_model', 'gpt4')
         resized_height = request.form.get('resized_height', 280)
         resized_width = request.form.get('resized_width', 280)
         session['indexer_model'] = indexer_model
@@ -337,7 +337,7 @@ def settings():
         return redirect(url_for('chat'))
     else:
         indexer_model = session.get('indexer_model', 'vidore/colpali')
-        generation_model = session.get('generation_model', 'qwen')
+        generation_model = session.get('generation_model', 'gpt4')
         resized_height = session.get('resized_height', 280)
         resized_width = session.get('resized_width', 280)
         return render_template('settings.html', 
